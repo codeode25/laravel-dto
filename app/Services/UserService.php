@@ -3,18 +3,19 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\DTOs\UserDTO;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function createUser(array $data): User
+    public function createUser(UserDTO $userDTO): User
     {
-        // No type safety — we assume $data has 'name', 'email', 'age' etc.
+        // we have type safety using the dto which basically acts like a struct
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'age' => $data['age'] ?? null,
-            'password' => Hash::make($data['password']),
+            'name' => $userDTO->name,
+            'email' => $userDTO->email,
+            'age' => $userDTO->age,
+            'password' => Hash::make($userDTO->password),
         ]);
     }
 }

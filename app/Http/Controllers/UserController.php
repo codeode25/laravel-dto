@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\UserDTO;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 
@@ -21,7 +22,14 @@ class UserController extends Controller
         ]);
 
         // 2. Pass array to service
-        $user = $this->userService->createUser($validated);
+        $user = $this->userService->createUser(
+            new UserDTO(
+                name: $validated['name'],
+                email: $validated['email'],
+                password: $validated['password'],
+                age: $validated['age'] ?? null,
+            )
+        );
 
         return response()->json($user, 201);
     }
